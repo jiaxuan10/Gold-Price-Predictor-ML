@@ -325,4 +325,3 @@ This project is for **educational and research purposes only**.
 ## 👨‍💻 Author
 
 Lim Jia Xuan
-Machine Learning & Quantitative Finance
