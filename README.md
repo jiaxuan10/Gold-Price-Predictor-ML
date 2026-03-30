@@ -13,7 +13,9 @@ This project implements a **machine learning-based trading system** designed to 
 
 Unlike traditional regression-based forecasting, this system is formulated as:
 
-> 🎯 **A probabilistic classification + decision optimization problem**
+> 🎯 **To develop a machine learning framework for predicting gold price movement
+> 🎯 **To integrate financial news sentiment into the predictive and decision making process 
+> 🎯 **To design and evaluate a risk-aware automated trading simulation based on model-driven signals
 
 ---
 
