@@ -1,4 +1,4 @@
-# 🧈 Gold Price Predictor ML: Quant System
+<img width="1832" height="731" alt="image" src="https://github.com/user-attachments/assets/4f81385f-cc18-4a14-8245-86e7eccc88bf" /># 🧈 Gold Price Predictor ML: Quant System
 
 <p align="center">
   🚀 AI-driven quantitative trading system
@@ -13,11 +13,11 @@ This project implements a **machine learning-based trading system** designed to 
 
 Unlike traditional regression-based forecasting, this system is formulated as:
 
-> 🎯 **To develop a machine learning framework for predicting gold price movement
+> 🎯 To develop a machine learning framework for predicting gold price movement
 
-> 🎯 **To integrate financial news sentiment into the predictive and decision making process
+> 🎯 To integrate financial news sentiment into the predictive and decision making process
 
-> 🎯 **To design and evaluate a risk-aware automated trading simulation based on model-driven signals
+> 🎯 To design and evaluate a risk-aware automated trading simulation based on model-driven signals
 
 ---
 
@@ -35,7 +35,7 @@ Model outputs:
 ```
 P_up = Probability that price will increase
 ```
-
+<img width="1832" height="731" alt="image" src="https://github.com/user-attachments/assets/cf31b447-e75f-419a-af80-e42198e2ca94" />
 ---
 
 ## 📊 Feature Engineering
@@ -48,6 +48,8 @@ Used to capture **market structure and momentum**:
 * MACD → trend + momentum shifts
 * Moving Averages → trend smoothing
 * ATR → volatility estimation
+
+<img width="1787" height="432" alt="image" src="https://github.com/user-attachments/assets/f29a3af2-60d2-46ef-9eed-0700553f90d2" />
 
 ---
 
@@ -69,6 +71,8 @@ Purpose:
 
 * Capture **market psychology**
 * Improve model robustness under news-driven volatility
+
+<img width="1778" height="475" alt="image" src="https://github.com/user-attachments/assets/8a138c11-2c3c-49d1-bfc9-5fc48bab0740" />
 
 ---
 
@@ -103,6 +107,8 @@ Weights:
 * XGBoost → 38.2%
 * Logistic Regression → 31.3%
 * Gradient Boosting → 30.5%
+
+<img width="1795" height="407" alt="image" src="https://github.com/user-attachments/assets/5a45fa2e-7e6e-4ca4-9fdd-2b6b27d0b166" />
 
 ---
 
