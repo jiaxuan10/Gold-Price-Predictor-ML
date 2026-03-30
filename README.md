@@ -1,4 +1,4 @@
-<img width="1832" height="731" alt="image" src="https://github.com/user-attachments/assets/4f81385f-cc18-4a14-8245-86e7eccc88bf" /># 🧈 Gold Price Predictor ML: Quant System
+# 🧈 Gold Price Predictor ML: Quant System
 
 <p align="center">
   🚀 AI-driven quantitative trading system
