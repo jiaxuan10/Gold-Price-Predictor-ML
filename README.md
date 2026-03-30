@@ -1,7 +1,7 @@
-# 🪙 Gold Price Predictor ML: Quant System
+# 🧈 Gold Price Predictor ML: Quant System
 
 <p align="center">
-  🚀 AI-driven quantitative trading system for <b>XAU/USD</b><br>
+  🚀 AI-driven quantitative trading system
   🧠 Ensemble Learning + NLP Sentiment + Risk-Aware Execution
 </p>
 
