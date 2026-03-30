@@ -2,185 +2,208 @@
 
 <p align="center">
   🚀 AI-driven quantitative trading system for <b>XAU/USD</b><br>
-  🧠 Ensemble Learning + NLP Sentiment + Risk-Aware Execution Engine
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/ML-Ensemble%20Learning-orange?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/NLP-FinBERT-green?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Focus-Quantitative%20Trading-purple?style=for-the-badge"/>
+  🧠 Ensemble Learning + NLP Sentiment + Risk-Aware Execution
 </p>
 
 ---
 
 ## 📌 System Overview
 
-This project implements a **full-stack AI trading pipeline** designed to model and exploit short-term inefficiencies in the gold market.
+This project implements a **machine learning-based trading system** designed to predict short-term gold price direction and convert predictions into **actionable trading decisions**.
 
-Unlike traditional ML systems that optimize for accuracy, this system is designed around:
+Unlike traditional regression-based forecasting, this system is formulated as:
 
-> 🎯 **Expected Trading Profitability (Risk-adjusted returns)**
-
----
-
-## 🧠 AI System Design Philosophy
-
-### 🔑 Core Idea
-
-Financial markets are:
-
-* Noisy
-* Non-stationary
-* Influenced by both **quantitative signals** and **qualitative sentiment**
-
-👉 Therefore, this system combines:
-
-| Component               | Purpose                            |
-| ----------------------- | ---------------------------------- |
-| 📊 Technical Indicators | Capture price momentum & structure |
-| 🤖 ML Models            | Learn non-linear relationships     |
-| 📰 Sentiment Analysis   | Capture market psychology          |
-| ⚡ Trading Logic         | Convert predictions → decisions    |
+> 🎯 **A probabilistic classification + decision optimization problem**
 
 ---
 
-## 🤖 Machine Learning Architecture
+## 🧠 Problem Formulation
 
-### 🔹 Problem Formulation
+Instead of predicting exact price:
 
-* Task: **Binary Classification**
-* Output:
+* Target = Direction of price movement
 
-  * `1` → Price Up
-  * `0` → Price Down
+  * 1 → Price Increase
+  * 0 → Price Decrease
 
-Instead of predicting price directly, the system predicts **directional probability**:
+Model outputs:
 
-[
-P(\text{Price Increase} | Features)
-]
+```
+P_up = Probability that price will increase
+```
 
 ---
 
-### 🔹 Feature Engineering
+## 📊 Feature Engineering
 
-The model uses **multi-domain features**:
+### 1. Technical Indicators
 
-#### 📊 Technical Indicators
+Used to capture **market structure and momentum**:
 
-* RSI (momentum)
-* MACD (trend + momentum)
-* Moving Averages (trend smoothing)
-* Volatility (ATR)
+* RSI → overbought / oversold conditions
+* MACD → trend + momentum shifts
+* Moving Averages → trend smoothing
+* ATR → volatility estimation
 
-#### 🧠 Sentiment Features
+---
 
-* FinBERT sentiment scores:
+### 2. Sentiment Features (NLP)
 
-  * Positive
-  * Neutral
-  * Negative
+Using **FinBERT**, news headlines are converted into:
 
-#### ⏱️ Temporal Features
+```
+Sentiment Score = {Positive, Neutral, Negative}
+```
+
+Then transformed into numerical signals:
+
+```
+Sentiment Index = weighted sentiment score
+```
+
+Purpose:
+
+* Capture **market psychology**
+* Improve model robustness under news-driven volatility
+
+---
+
+### 3. Time-Series Features
 
 * Lagged returns
-* Rolling statistics
+* Rolling mean / variance
+* Temporal dependencies
+
+✔ Ensures model captures **sequential behavior**
 
 ---
 
-### 🔹 Ensemble Learning Strategy
+## 🤖 Machine Learning Model
 
-Instead of relying on a single model, the system uses a **soft-voting ensemble**:
+### 🔹 Ensemble Strategy
 
-| Model               | Strength                              |
-| ------------------- | ------------------------------------- |
-| XGBoost             | Captures complex non-linear patterns  |
-| Logistic Regression | Provides stability & interpretability |
-| Gradient Boosting   | Improves residual errors              |
+The final prediction is a **weighted soft-voting model**:
 
-📌 Final Prediction:
-[
-P_{final} = \sum w_i P_i
-]
+```
+P_final = w1 * P_xgb + w2 * P_lr + w3 * P_gb
+```
 
 Where:
 
-* ( w_i ) = model weights
-* ( P_i ) = predicted probabilities
+* P_xgb → XGBoost prediction
+* P_lr → Logistic Regression
+* P_gb → Gradient Boosting
+
+Weights:
+
+* XGBoost → 38.2%
+* Logistic Regression → 31.3%
+* Gradient Boosting → 30.5%
 
 ---
 
-### 🔹 Probability Calibration
+### 🔹 Why Ensemble?
 
-Raw ML probabilities are often **overconfident**.
+Each model captures different patterns:
 
-👉 Solution:
+| Model               | Role                    |
+| ------------------- | ----------------------- |
+| XGBoost             | Non-linear interactions |
+| Logistic Regression | Stability + baseline    |
+| Gradient Boosting   | Error refinement        |
 
-* Apply **Platt Scaling**
-* Ensures:
+👉 Ensemble reduces:
 
-  * Better probability reliability
-  * More stable trading decisions
+* Overfitting
+* Model bias
+* Variance
 
 ---
 
-## ⚡ Trading Decision Engine
+## 🎯 Probability Calibration
 
-### 🔹 From Prediction → Action
+Raw model outputs are often **not well-calibrated**.
 
-Instead of naive classification:
+Applied method:
 
-| Probability       | Action  |
-| ----------------- | ------- |
-| > Upper Threshold | 🟢 Buy  |
-| < Lower Threshold | 🔴 Sell |
-| Otherwise         | ⚪ Hold  |
+```
+Platt Scaling
+```
+
+Purpose:
+
+* Transform raw probabilities into **true likelihood estimates**
+* Improve decision reliability
+
+---
+
+## ⚡ Trading Decision Logic
+
+### 🔹 Signal Generation
+
+Instead of direct classification:
+
+```
+If P_final > Upper_Threshold → BUY
+If P_final < Lower_Threshold → SELL
+Else → HOLD
+```
 
 ---
 
 ### 🔹 Dynamic Thresholding
 
-Thresholds are **not fixed**.
+Thresholds are adaptive:
 
-They adapt based on:
+```
+Upper_Threshold = base + sentiment_adjustment
+Lower_Threshold = base - sentiment_adjustment
+```
 
-* Market volatility
-* Sentiment strength
+Where:
 
-👉 This avoids:
-
-* Overtrading
-* Noise-driven signals
+* Positive sentiment → easier to BUY
+* Negative sentiment → stricter BUY condition
 
 ---
 
 ## 🛡️ Risk Management System
 
-A realistic trading system must manage risk:
-
 ### 🔹 Position Sizing
 
-* Scaled based on confidence level
-* Higher probability → larger position
+Position size depends on confidence:
+
+```
+Position Size ∝ P_final
+```
+
+Higher confidence → larger allocation
 
 ---
 
 ### 🔹 Stop Loss (ATR-Based)
 
-[
-StopLoss = EntryPrice \pm k \cdot ATR
-]
+```
+Stop Loss = Entry Price ± k * ATR
+```
 
-* Adjusts dynamically with volatility
-* Prevents large drawdowns
+Where:
+
+* ATR = Average True Range
+* k = risk multiplier
+
+Purpose:
+
+* Adapt to market volatility
+* Prevent excessive losses
 
 ---
 
 ### 🔹 Risk Constraints
 
-* Maximum exposure limits
-* Trade filtering under uncertainty
+* Limit max exposure
+* Filter low-confidence trades
+* Avoid overtrading
 
 ---
 
@@ -189,60 +212,61 @@ StopLoss = EntryPrice \pm k \cdot ATR
 ### 🔹 Time-Series Validation
 
 * Walk-forward validation
+* No random shuffling
 * No data leakage
 
 ---
 
 ### 🔹 Evaluation Metrics
 
-#### 📊 ML Metrics
+#### ML Metrics:
 
-* Precision (focus on signal quality)
+* Precision (important for trading signals)
 * Recall
 * F1-score
 
-#### 💰 Trading Metrics
+#### Trading Metrics:
 
-* Sharpe Ratio → risk-adjusted return
-* Win Rate → consistency
-* Max Drawdown → downside risk
+* Sharpe Ratio
+* Win Rate
+* Max Drawdown
 
 ---
 
-## 🚀 Performance Results
+## 🚀 Results
 
-| Metric          | Value      |
-| --------------- | ---------- |
-| 📈 Sharpe Ratio | **3.05**   |
-| 🎯 Win Rate     | **58%**    |
-| 📉 Max Drawdown | **-3.45%** |
+| Metric       | Value      |
+| ------------ | ---------- |
+| Sharpe Ratio | **3.05**   |
+| Win Rate     | **58%**    |
+| Max Drawdown | **-3.45%** |
 
 ---
 
 ## 🏗️ System Architecture
 
-```text id="r7m9u6"
-📥 Data Layer
+```text
+Data Layer
  ├── Market Data (Yahoo Finance)
  └── News Data (RSS Feeds)
 
-⚙️ Feature Layer
+Feature Layer
  ├── Technical Indicators
- └── Sentiment Features
+ └── Sentiment Scores
 
-🤖 Model Layer
- ├── Ensemble Learning
+Model Layer
+ ├── Ensemble Model
  └── Probability Calibration
 
-⚡ Decision Layer
+Decision Layer
  ├── Threshold Logic
  └── Signal Generation
 
-🛡️ Risk Layer
+Risk Layer
  ├── Position Sizing
  └── Stop Loss Engine
 
-🖥️ Interface Layer
+Interface Layer
  └── Streamlit Dashboard
 ```
 
@@ -250,59 +274,55 @@ StopLoss = EntryPrice \pm k \cdot ATR
 
 ## 🔄 End-to-End Pipeline
 
-1. Data ingestion (market + news)
-2. Feature generation
-3. Sentiment scoring
-4. ML probability prediction
-5. Calibration
-6. Trading decision
-7. Risk filtering
-8. Performance tracking
+1. Collect market + news data
+2. Generate features
+3. Compute sentiment scores
+4. Predict probability (P_up)
+5. Apply calibration
+6. Generate trading signal
+7. Apply risk management
+8. Evaluate performance
 
 ---
 
-## 🛠️ Future Improvements (Technical Roadmap)
+## 🛠️ Future Improvements (Aligned with Research)
 
-### 🔬 Advanced Modeling
+### 🔬 Modeling
 
-* LSTM / Transformer (TimeGPT)
+* LSTM / Transformer (Time-series deep learning)
 * Regime-switching models
-* Reinforcement Learning (trading policy optimization)
 
 ---
 
-### 📊 Data Expansion
+### 📊 Data
 
-* Macroeconomic signals (CPI, Rates)
-* Cross-asset signals (DXY, equities)
-* Alternative data (Twitter, news volume)
+* Macroeconomic variables (CPI, Interest Rates)
+* USD Index (DXY)
+* Alternative sentiment sources
 
 ---
 
-### ⚡ Infrastructure
+### ⚡ System
 
 * Real-time streaming (Kafka)
-* Distributed training
-* Cloud deployment (AWS/GCP)
+* Cloud deployment
 
 ---
 
 ### 🔍 Explainability
 
 * SHAP values
-* Feature contribution analysis
-* Model debugging tools
+* Feature importance analysis
 
 ---
 
 ## ⚠️ Disclaimer
 
-This project is for **research and educational purposes only**.
-No real financial trading is performed.
+This project is for **educational and research purposes only**.
 
 ---
 
 ## 👨‍💻 Author
 
-**Lim Jia Xuan**
-Machine Learning • Quantitative Finance • AI Systems
+Lim Jia Xuan
+Machine Learning & Quantitative Finance
